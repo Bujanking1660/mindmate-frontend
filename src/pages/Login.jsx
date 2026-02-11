@@ -9,6 +9,11 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
+  const handleGoogleLogin = () => {
+    // Redirect langsung ke backend endpoint untuk Google OAuth
+    window.location.replace("http://localhost:3000/auth/google");
+  };
+
   const handleLogin = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -20,10 +25,8 @@ const Login = () => {
       });
 
       console.log(response.data);
-      
-      
-      if (response.status === 200 || response.status === 201) {
 
+      if (response.status === 200 || response.status === 201) {
         // access token
         const token = response.data.data.accessToken;
         localStorage.setItem("user_token", token);
@@ -33,6 +36,7 @@ const Login = () => {
       }
     } catch (error) {
       alert("Terjadi kesalahan sistem");
+      console.log(error);
     } finally {
       setLoading(false);
     }
@@ -111,6 +115,7 @@ const Login = () => {
         {/* Social Login */}
         <button
           type="button"
+          onClick={handleGoogleLogin}
           className="w-full bg-white/50 hover:bg-white flex items-center justify-center gap-3 py-3 rounded-2xl text-[#1E293B] font-semibold transition-all border border-white/20 shadow-sm"
         >
           <img
@@ -124,7 +129,10 @@ const Login = () => {
         {/* Footer Link */}
         <p className="text-center text-sm text-gray-500 mt-8 font-medium">
           Don't have an account?{" "}
-          <Link to="/register" className="text-[#1E293B] font-bold cursor-pointer hover:underline transition-all underline-offset-4">
+          <Link
+            to="/register"
+            className="text-[#1E293B] font-bold cursor-pointer hover:underline transition-all underline-offset-4"
+          >
             Sign Up
           </Link>
         </p>
