@@ -15,7 +15,8 @@ export const Navbar = () => {
         console.warn("Logout server gagal, melanjutkan hapus sesi lokal...", error);
     } finally {
         localStorage.removeItem("user_token");
-        // Hapus data user lain jika ada
+        localStorage.removeItem("user_data");
+        localStorage.removeItem("user_name");
         navigate("/login");
     }
   };
