@@ -178,7 +178,7 @@ const Home = () => {
         const defaultStyle = getMoodStyle(2); 
         return {
             id: null,
-            status: "No Data",
+            status: "Come on, log your mood!",
             time: "--:--",
             icon: defaultStyle.image, 
             note: isToday ? "You haven't logged your mood today." : "No data logged for this day.",
