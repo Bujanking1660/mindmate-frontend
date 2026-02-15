@@ -175,12 +175,11 @@ const Home = () => {
             tags: displayTags 
         };
     } else {
-        const defaultStyle = getMoodStyle(2); 
         return {
             id: null,
             status: "Come on, log your mood!",
             time: "--:--",
-            icon: defaultStyle.image, 
+            icon: '/default.png', 
             note: isToday ? "You haven't logged your mood today." : "No data logged for this day.",
             textColor: "text-slate-400",
             bgGradient: "from-slate-50 to-white",
