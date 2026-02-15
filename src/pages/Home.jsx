@@ -27,7 +27,7 @@ const Home = () => {
   // =========================================
   const [moodHistory, setMoodHistory] = useState([]); 
   const [moodTypes, setMoodTypes] = useState([]); 
-  const [allTags, setAllTags] = useState([]);     
+  const [allTags, setAllTags] = useState([]);  
   const [isLoading, setIsLoading] = useState(true);
 
   // View State
@@ -44,11 +44,11 @@ const Home = () => {
   // 2. MEMOIZED STYLES & PRELOAD
   // =========================================
   const moodStyles = useMemo(() => ({
-    0: { textColor: "text-[#2E3192]", bgGradient: "from-[#EBEBFF] to-[#D6D6FF]", shadowColor: "shadow-[#2E3192]/10", image: "/very_sad.png" }, 
-    1: { textColor: "text-[#002B5D]", bgGradient: "from-[#E0F4FF] to-[#C7EEFF]", shadowColor: "shadow-[#002B5D]/10", image: "/sad.png" }, 
-    2: { textColor: "text-[#00970D]", bgGradient: "from-[#EAFFEF] to-[#D4FFE0]", shadowColor: "shadow-[#00970D]/10", image: "/normal.png" }, 
-    3: { textColor: "text-[#B16000]", bgGradient: "from-[#FFFDEB] to-[#FFF6CC]", shadowColor: "shadow-[#B16000]/10", image: "/happy.png" }, 
-    4: { textColor: "text-[#FF7E5F]", bgGradient: "from-[#FFF2EF] to-[#FFE0DB]", shadowColor: "shadow-[#FF7E5F]/10", image: "/very_happy.png" }  
+    "0": { textColor: "text-[#FFFFFF]", bgGradient: "from-[#7F1D1D] to-[#B91C1C]", shadowColor: "shadow-[#000]/50", image: "/very_sad.png" }, 
+    "1": { textColor: "text-[#1F2937]", bgGradient: "from-[#C2410C  ] to-[#FDBA74]", shadowColor: "shadow-[#000]/25", image: "/sad.png" }, 
+    "2": { textColor: "text-[#0F172A]", bgGradient: "from-[#1E3A8A ] to-[#60A5FA]", shadowColor: "shadow-[#000000]/20", image: "/normal.png" }, 
+    "3": { textColor: "text-[#064E3B]", bgGradient: "from-[#166534 ] to-[#4ADE80]", shadowColor: "shadow-[#000000]/15", image: "/happy.png" }, 
+    "4": { textColor: "text-[#083344]", bgGradient: "from-[#0891B2 ] to-[#67E8F9]", shadowColor: "shadow-[#000]/15", image: "/very_happy.png" }  
   }), []);
 
   const getMoodStyle = useCallback((id) => {
@@ -209,7 +209,7 @@ const Home = () => {
 
   // HANDLER BARU: Smart Tag Transfer
   const handleMoodChange = (newMood) => {
-    if (selectedMood?.id === newMood.id) return; // Klik mood yg sama
+    if (selectedMood && String(selectedMood?.id) === String(newMood.id)) return; 
 
     // 1. Ambil nama-nama tag yang sedang dipilih sekarang
     const currentTagNames = selectedTagIds.map(id => {
@@ -462,7 +462,7 @@ const Home = () => {
                 <div className="flex justify-between gap-1 mb-6 overflow-x-auto py-2 px-1 scrollbar-hide shrink-0">
                   {moodTypes.map((m) => {
                     const style = getMoodStyle(m.id);
-                    const isSelected = selectedMood?.id === m.id;
+                    const isSelected = selectedMood && String(selectedMood?.id) === String(m.id);
                     return (
                       // UPDATE: Menggunakan handleMoodChange untuk logic Smart Tag Transfer
                       <button key={m.id} onClick={() => handleMoodChange(m)} className={`group flex flex-col items-center gap-2 transition-all duration-200 p-2 rounded-2xl ${isSelected ? 'bg-slate-50 scale-110 -translate-y-1 ring-2 ring-slate-100' : 'opacity-60 hover:opacity-100 hover:bg-gray-50'}`}>
