@@ -1,9 +1,11 @@
 import { NavLink } from "react-router-dom";
-import { Home, BarChart2, Box } from "lucide-react";
+import { Home, BarChart2 } from "lucide-react";
 
 export const SubNavbar = () => {
-  const baseStyle =
-    "flex items-center gap-2 font-medium text-gray-400 hover:text-[#1E293B] transition pb-2 border-b-2 border-transparent";
+  const commonStyle =
+    "flex items-center gap-2 font-medium transition-all pb-2 border-b-2";
+
+  const inactiveStyle = "text-gray-400 border-transparent hover:text-[#1E293B]";
   const activeStyle = "text-[#1E293B] font-bold border-[#1E293B]";
 
   return (
@@ -11,7 +13,7 @@ export const SubNavbar = () => {
       <NavLink
         to="/home"
         className={({ isActive }) =>
-          isActive ? `${baseStyle} ${activeStyle}` : baseStyle
+          `${commonStyle} ${isActive ? activeStyle : inactiveStyle}`
         }
       >
         <Home size={20} /> <span>Home</span>
@@ -20,7 +22,7 @@ export const SubNavbar = () => {
       <NavLink
         to="/report"
         className={({ isActive }) =>
-          isActive ? `${baseStyle} ${activeStyle}` : baseStyle
+          `${commonStyle} ${isActive ? activeStyle : inactiveStyle}`
         }
       >
         <BarChart2 size={20} /> <span>Report</span>
