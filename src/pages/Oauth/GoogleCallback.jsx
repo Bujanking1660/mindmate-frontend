@@ -8,7 +8,7 @@ const GoogleCallback = () => {
 
   useEffect(() => {
     if (processedRef.current) return;
-    processedRef.current = true; // Tandai langsung biar gak jalan 2x
+    processedRef.current = true;
 
     const handleGoogleCallback = () => {
       const token = searchParams.get("token");

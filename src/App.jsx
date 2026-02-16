@@ -1,11 +1,11 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Login from "./pages/Login";
-import Home from "./pages/Home";
-import Report from "./pages/Report";
-import Profile from "./pages/Profile";
+import Login from "./pages/Login/Login";
+import Home from "./pages/Home/Home";
+import Report from "./pages/Report/Report";
+import Profile from "./pages/Profile/Profile";
 import MainLayout from "./layouts/MainLayout";
-import Register from "./pages/Register";
-import GoogleCallback from "./pages/GoogleCallback";
+import Register from "./pages/Register/Register";
+import GoogleCallback from "./pages/Oauth/GoogleCallback";
 function App() {
   return (
     <Router>
