@@ -6,14 +6,15 @@ import Profile from "./pages/Profile/Profile";
 import MainLayout from "./layouts/MainLayout";
 import Register from "./pages/Register/Register";
 import GoogleCallback from "./pages/Oauth/GoogleCallback";
+import LandingPage from "./pages/LandingPage/LandingPage";
 function App() {
   return (
     <Router>
       <Routes>
+        <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/auth/google/callback" element={<GoogleCallback />} />
-        <Route path="/" element={<Login />} />
 
         <Route element={<MainLayout />}>
           <Route path="/home" element={<Home />} />
