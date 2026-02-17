@@ -7,7 +7,8 @@ import MoodCalendar from "./components/MoodCalendar";
 import DailyOverviewCard from "./components/DailyOverviewCard";
 import SideWidgets from "./components/SideWidgets";
 import MoodInputModal from "./components/MoodInputModal";
-import DashboardSkeleton from "./components/DashboardSkeleton"; 
+import DashboardSkeleton from "./components/DashboardSkeleton";
+import ModuleDetailModal from "./components/ModuleDetailModal";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -21,9 +22,12 @@ const Home = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   // View State
-  const [selectedDateStr, setSelectedDateStr] = useState(new Date().toLocaleDateString('en-CA'));
+  const [selectedDateStr, setSelectedDateStr] = useState(
+    new Date().toLocaleDateString("en-CA"),
+  );
   const [showMoodModal, setShowMoodModal] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
+  const [showModuleModal, setShowModuleModal] = useState(false);
 
   // Form State
   const [selectedMood, setSelectedMood] = useState(null);
@@ -33,20 +37,56 @@ const Home = () => {
   // =========================================
   // 2. STYLES & PRELOAD (Updated Colors)
   // =========================================
-  const moodStyles = useMemo(() => ({
-    "0": { textColor: "text-red-900", bgGradient: "from-red-400 to-rose-600", shadowColor: "shadow-rose-500/40", image: "/very_sad.png", labelColor: "bg-red-100 text-red-700" },
-    "1": { textColor: "text-orange-900", bgGradient: "from-orange-300 to-amber-500", shadowColor: "shadow-orange-500/40", image: "/sad.png", labelColor: "bg-orange-100 text-orange-700" },
-    "2": { textColor: "text-blue-900", bgGradient: "from-blue-300 to-indigo-500", shadowColor: "shadow-blue-500/40", image: "/normal.png", labelColor: "bg-blue-100 text-blue-700" },
-    "3": { textColor: "text-emerald-900", bgGradient: "from-emerald-300 to-green-500", shadowColor: "shadow-emerald-500/40", image: "/happy.png", labelColor: "bg-emerald-100 text-emerald-700" },
-    "4": { textColor: "text-cyan-900", bgGradient: "from-cyan-300 to-blue-500", shadowColor: "shadow-cyan-500/40", image: "/very_happy.png", labelColor: "bg-cyan-100 text-cyan-700" }
-  }), []);
+  const moodStyles = useMemo(
+    () => ({
+      0: {
+        textColor: "text-red-900",
+        bgGradient: "from-red-400 to-rose-600",
+        shadowColor: "shadow-rose-500/40",
+        image: "/very_sad.png",
+        labelColor: "bg-red-100 text-red-700",
+      },
+      1: {
+        textColor: "text-orange-900",
+        bgGradient: "from-orange-300 to-amber-500",
+        shadowColor: "shadow-orange-500/40",
+        image: "/sad.png",
+        labelColor: "bg-orange-100 text-orange-700",
+      },
+      2: {
+        textColor: "text-blue-900",
+        bgGradient: "from-blue-300 to-indigo-500",
+        shadowColor: "shadow-blue-500/40",
+        image: "/normal.png",
+        labelColor: "bg-blue-100 text-blue-700",
+      },
+      3: {
+        textColor: "text-emerald-900",
+        bgGradient: "from-emerald-300 to-green-500",
+        shadowColor: "shadow-emerald-500/40",
+        image: "/happy.png",
+        labelColor: "bg-emerald-100 text-emerald-700",
+      },
+      4: {
+        textColor: "text-cyan-900",
+        bgGradient: "from-cyan-300 to-blue-500",
+        shadowColor: "shadow-cyan-500/40",
+        image: "/very_happy.png",
+        labelColor: "bg-cyan-100 text-cyan-700",
+      },
+    }),
+    [],
+  );
 
-  const getMoodStyle = useCallback((id) => {
-    return moodStyles[id] || moodStyles[2];
-  }, [moodStyles]);
+  const getMoodStyle = useCallback(
+    (id) => {
+      return moodStyles[id] || moodStyles[2];
+    },
+    [moodStyles],
+  );
 
   useEffect(() => {
-    Object.values(moodStyles).forEach(style => {
+    Object.values(moodStyles).forEach((style) => {
       const img = new Image();
       img.src = style.image;
     });
@@ -68,7 +108,7 @@ const Home = () => {
         const [typesRes, tagsRes, moodRes] = await Promise.all([
           api.get("/mood-type"),
           api.get("/feelings"),
-          api.get("/mood")
+          api.get("/mood"),
         ]);
 
         setMoodTypes(typesRes.data.data || []);
@@ -89,9 +129,10 @@ const Home = () => {
   // =========================================
   useEffect(() => {
     if (!isLoading && moodHistory.length >= 0) {
-      const todayStr = new Date().toLocaleDateString('en-CA');
-      const hasTodayData = moodHistory.some(item =>
-        new Date(item.logDate).toLocaleDateString('en-CA') === todayStr
+      const todayStr = new Date().toLocaleDateString("en-CA");
+      const hasTodayData = moodHistory.some(
+        (item) =>
+          new Date(item.logDate).toLocaleDateString("en-CA") === todayStr,
       );
 
       if (!hasTodayData) {
@@ -109,59 +150,79 @@ const Home = () => {
   // =========================================
   const daysInMonth = useMemo(() => {
     const now = new Date();
-    const totalDays = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
+    const totalDays = new Date(
+      now.getFullYear(),
+      now.getMonth() + 1,
+      0,
+    ).getDate();
     return Array.from({ length: totalDays }, (_, i) => i + 1);
   }, []);
 
   const streakDates = useMemo(() => {
     if (!moodHistory.length) return [];
-    const loggedDates = new Set(moodHistory.map(item => new Date(item.logDate).toLocaleDateString('en-CA')));
-    const todayStr = new Date().toLocaleDateString('en-CA');
+    const loggedDates = new Set(
+      moodHistory.map((item) =>
+        new Date(item.logDate).toLocaleDateString("en-CA"),
+      ),
+    );
+    const todayStr = new Date().toLocaleDateString("en-CA");
 
     let checkDate = new Date();
     if (!loggedDates.has(todayStr)) checkDate.setDate(checkDate.getDate() - 1);
 
     let tempStreak = [];
     while (true) {
-      const dStr = checkDate.toLocaleDateString('en-CA');
+      const dStr = checkDate.toLocaleDateString("en-CA");
       if (loggedDates.has(dStr)) {
         tempStreak.push(dStr);
         checkDate.setDate(checkDate.getDate() - 1);
-      } else { break; }
+      } else {
+        break;
+      }
     }
     return tempStreak.length >= 3 ? tempStreak : [];
   }, [moodHistory]);
 
   const dailyData = useMemo(() => {
-    const isToday = selectedDateStr === new Date().toLocaleDateString('en-CA');
-    const moodEntry = moodHistory.find(item =>
-      new Date(item.logDate).toLocaleDateString('en-CA') === selectedDateStr
+    const isToday = selectedDateStr === new Date().toLocaleDateString("en-CA");
+    const moodEntry = moodHistory.find(
+      (item) =>
+        new Date(item.logDate).toLocaleDateString("en-CA") === selectedDateStr,
     );
 
     if (moodEntry) {
-      const moodTypeInfo = moodTypes.find(t => String(t.id) === String(moodEntry.moodTypeId));
+      const moodTypeInfo = moodTypes.find(
+        (t) => String(t.id) === String(moodEntry.moodTypeId),
+      );
       const style = getMoodStyle(moodEntry.moodTypeId);
 
       let displayTags = [];
       if (moodEntry.moodLogTags && Array.isArray(moodEntry.moodLogTags)) {
-        displayTags = moodEntry.moodLogTags.map(logItem => {
-          const tagId = logItem.feelingTagId;
-          const foundTag = allTags.find(t => String(t.id) === String(tagId));
-          return foundTag ? foundTag.tagName : null;
-        }).filter(Boolean);
+        displayTags = moodEntry.moodLogTags
+          .map((logItem) => {
+            const tagId = logItem.feelingTagId;
+            const foundTag = allTags.find(
+              (t) => String(t.id) === String(tagId),
+            );
+            return foundTag ? foundTag.tagName : null;
+          })
+          .filter(Boolean);
       }
 
       return {
         id: moodEntry.id,
+        moodTypeId: moodEntry.moodTypeId,
         status: moodTypeInfo ? moodTypeInfo.moodName : "Unknown",
-        time: new Date(moodEntry.createdAt || moodEntry.logDate).toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" }),
+        time: new Date(
+          moodEntry.createdAt || moodEntry.logDate,
+        ).toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" }),
         icon: style.image,
         note: moodEntry.journalNote || "No note added.",
         textColor: style.textColor,
         bgGradient: style.bgGradient,
         shadowColor: style.shadowColor,
         labelColor: style.labelColor,
-        tags: displayTags
+        tags: displayTags,
       };
     } else {
       return {
@@ -169,19 +230,23 @@ const Home = () => {
         status: "No Data",
         time: "--:--",
         icon: null, // Handle null icon in card
-        note: isToday ? "You haven't logged your mood today." : "No data logged for this day.",
+        note: isToday
+          ? "You haven't logged your mood today."
+          : "No data logged for this day.",
         textColor: "text-slate-400",
         bgGradient: "from-slate-100 to-slate-200",
         shadowColor: "shadow-slate-200",
         labelColor: "bg-slate-100 text-slate-500",
-        tags: []
+        tags: [],
       };
     }
   }, [selectedDateStr, moodHistory, moodTypes, allTags, getMoodStyle]);
 
   const availableTags = useMemo(() => {
     if (!selectedMood) return [];
-    return allTags.filter(tag => String(tag.moodTypeId) === String(selectedMood.id));
+    return allTags.filter(
+      (tag) => String(tag.moodTypeId) === String(selectedMood.id),
+    );
   }, [selectedMood, allTags]);
 
   // =========================================
@@ -189,44 +254,66 @@ const Home = () => {
   // =========================================
   const handleDateClick = useCallback((day) => {
     const now = new Date();
-    setSelectedDateStr(new Date(now.getFullYear(), now.getMonth(), day).toLocaleDateString('en-CA'));
+    setSelectedDateStr(
+      new Date(now.getFullYear(), now.getMonth(), day).toLocaleDateString(
+        "en-CA",
+      ),
+    );
   }, []);
 
   const toggleTag = (tagId) => {
-    setSelectedTagIds(prev => prev.includes(tagId) ? prev.filter(id => id !== tagId) : [...prev, tagId]);
+    setSelectedTagIds((prev) =>
+      prev.includes(tagId)
+        ? prev.filter((id) => id !== tagId)
+        : [...prev, tagId],
+    );
   };
 
   const handleMoodChange = (newMood) => {
     if (selectedMood && String(selectedMood?.id) === String(newMood.id)) return;
-    const currentTagNames = selectedTagIds.map(id => {
-      const tag = allTags.find(t => t.id === id);
-      return tag ? tag.tagName : null;
-    }).filter(Boolean);
+    const currentTagNames = selectedTagIds
+      .map((id) => {
+        const tag = allTags.find((t) => t.id === id);
+        return tag ? tag.tagName : null;
+      })
+      .filter(Boolean);
 
     setSelectedMood(newMood);
 
-    const availableTagsForNewMood = allTags.filter(t => String(t.moodTypeId) === String(newMood.id));
+    const availableTagsForNewMood = allTags.filter(
+      (t) => String(t.moodTypeId) === String(newMood.id),
+    );
     const matchingTagIds = availableTagsForNewMood
-      .filter(t => currentTagNames.includes(t.tagName))
-      .map(t => t.id);
+      .filter((t) => currentTagNames.includes(t.tagName))
+      .map((t) => t.id);
 
     setSelectedTagIds(matchingTagIds);
   };
 
   const handleOpenCreateModal = () => {
-    const isToday = selectedDateStr === new Date().toLocaleDateString('en-CA');
+    const isToday = selectedDateStr === new Date().toLocaleDateString("en-CA");
     if (isToday && dailyData.id === null) {
-      setIsEditing(false); setSelectedMood(null); setMoodNote(""); setSelectedTagIds([]); setShowMoodModal(true);
+      setIsEditing(false);
+      setSelectedMood(null);
+      setMoodNote("");
+      setSelectedTagIds([]);
+      setShowMoodModal(true);
     }
   };
 
   const handleEditClick = () => {
-    const currentLog = moodHistory.find(m => m.id === dailyData.id);
+    const currentLog = moodHistory.find((m) => m.id === dailyData.id);
     if (!currentLog) return;
     setIsEditing(true);
-    setSelectedMood(moodTypes.find(mt => String(mt.id) === String(currentLog.moodTypeId)));
+    setSelectedMood(
+      moodTypes.find((mt) => String(mt.id) === String(currentLog.moodTypeId)),
+    );
     setMoodNote(currentLog.journalNote || "");
-    setSelectedTagIds(currentLog.moodLogTags ? currentLog.moodLogTags.map(t => t.feelingTagId) : []);
+    setSelectedTagIds(
+      currentLog.moodLogTags
+        ? currentLog.moodLogTags.map((t) => t.feelingTagId)
+        : [],
+    );
     setShowMoodModal(true);
   };
 
@@ -235,14 +322,17 @@ const Home = () => {
     const payload = {
       moodTypeId: selectedMood.id,
       journalNote: moodNote,
-      feelingTagIds: selectedTagIds
+      feelingTagIds: selectedTagIds,
     };
 
     try {
       if (isEditing) {
         await api.put(`/mood/${dailyData.id}`, payload);
       } else {
-        await api.post("/mood", { ...payload, logDate: new Date().toISOString() });
+        await api.post("/mood", {
+          ...payload,
+          logDate: new Date().toISOString(),
+        });
       }
       const { data } = await api.get("/mood");
       setMoodHistory(data.data || []);
@@ -269,34 +359,50 @@ const Home = () => {
     }
   };
 
-  const isViewingToday = selectedDateStr === new Date().toLocaleDateString('en-CA');
+  const handleOpenModule = () => {
+    // Cek apakah ada data mood hari ini
+    if (dailyData && dailyData.moodTypeId !== undefined) {
+      setShowModuleModal(true);
+    } else {
+      alert("Silakan isi mood hari ini dulu!");
+    }
+  };
+
+  const isViewingToday =
+    selectedDateStr === new Date().toLocaleDateString("en-CA");
 
   // =========================================
   // 7. RENDER UI
   // =========================================
   return (
     <div className="min-h-screen font-sans pb-20 animate-in fade-in duration-500 overflow-x-hidden">
-      
       {/* Decorative Background */}
       <div className="fixed top-0 left-0 w-full h-96 bg-linear-to-b from-blue-50/50 to-transparent -z-10" />
-
       <main className="max-w-6xl mx-auto px-6 py-10">
-        
         {/* HEADER */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-10 gap-2">
           <div>
-             <h1 className="text-4xl font-black text-slate-800 tracking-tight">Halo, Apa Kabar?</h1>
-             <p className="text-slate-500 font-medium text-lg mt-1">Lacak kebiasaan mood harian kamu disini.</p>
+            <h1 className="text-4xl font-black text-slate-800 tracking-tight">
+              Halo, Apa Kabar?
+            </h1>
+            <p className="text-slate-500 font-medium text-lg mt-1">
+              Lacak kebiasaan mood harian kamu disini.
+            </p>
           </div>
           <div className="bg-white px-5 py-2 rounded-full shadow-sm border border-slate-100">
-             <span className="text-sm font-bold text-slate-600">
-                {new Date().toLocaleDateString("id-ID", { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}
-             </span>
+            <span className="text-sm font-bold text-slate-600">
+              {new Date().toLocaleDateString("id-ID", {
+                weekday: "long",
+                day: "numeric",
+                month: "long",
+                year: "numeric",
+              })}
+            </span>
           </div>
         </div>
 
         {/* CALENDAR */}
-        <MoodCalendar 
+        <MoodCalendar
           daysInMonth={daysInMonth}
           moodHistory={moodHistory}
           streakDates={streakDates}
@@ -308,8 +414,8 @@ const Home = () => {
           <DashboardSkeleton />
         ) : (
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 animate-in slide-in-from-bottom-4 duration-700">
-            {/* MAIN CARD (Hero) - Span 5 */}
-            <DailyOverviewCard 
+            {/* MAIN CARD */}
+            <DailyOverviewCard
               dailyData={dailyData}
               isViewingToday={isViewingToday}
               onEdit={handleEditClick}
@@ -318,16 +424,29 @@ const Home = () => {
               selectedDateStr={selectedDateStr}
             />
 
-            {/* SIDE WIDGETS - Span 7 */}
-            <SideWidgets dailyData={dailyData} />
+            {/* SIDE WIDGETS */}
+            <SideWidgets
+              dailyData={dailyData}
+              onOpenModule={handleOpenModule}
+            />
           </div>
         )}
       </main>
-
-      {/* MODAL */}
-      <MoodInputModal 
+      {/* 2. RENDER MODULE DETAIL MODAL DISINI */}
+      {/* Pastikan ini ada agar Pop-up muncul! */}
+      <ModuleDetailModal
+        isOpen={showModuleModal}
+        onClose={() => setShowModuleModal(false)}
+        moodTypeId={dailyData.moodTypeId}
+      />{" "}
+      {/* <--- TAMBAHAN PENTING */}
+      {/* MODAL INPUT MOOD (Yang lama) */}
+      <MoodInputModal
         isOpen={showMoodModal}
-        onClose={() => {setShowMoodModal(false); setIsEditing(false);}}
+        onClose={() => {
+          setShowMoodModal(false);
+          setIsEditing(false);
+        }}
         isEditing={isEditing}
         moodTypes={moodTypes}
         selectedMood={selectedMood}
