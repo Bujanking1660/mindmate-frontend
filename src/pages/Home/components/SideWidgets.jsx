@@ -23,7 +23,7 @@ const SideWidgets = ({ dailyData, onOpenModule }) => {
       </div>
 
       {/* 2. Latest Journal */}
-      <div className="bg-white rounded-[2.5rem] p-8 md:p-10 shadow-xl shadow-slate-200/40 border border-slate-100 flex-1 relative overflow-hidden group min-h-[250px]">
+      <div className="bg-white rounded-[2.5rem] p-8 md:p-10 shadow-xl shadow-slate-200/40 border border-slate-100 flex-1 relative overflow-hidden group min-h-62.5">
         
         <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-yellow-50 rounded-full blur-3xl opacity-60"></div>
         <div className="absolute top-10 right-10 w-20 h-20 bg-blue-50 rounded-full blur-2xl opacity-40"></div>
