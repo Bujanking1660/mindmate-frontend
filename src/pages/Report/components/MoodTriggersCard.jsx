@@ -1,77 +1,104 @@
-import React from "react";
+import React, { useState } from "react";
 import { Zap, Activity } from "lucide-react";
 
 const MoodTriggersCard = ({ triggersData, loading }) => {
-  // 1. Loading State
-  if (loading) {
-    return (
-      <div className="bg-white rounded-3xl p-6 shadow-sm border border-slate-100 mb-8 animate-pulse">
-        <div className="h-6 w-1/3 bg-slate-200 rounded mb-4"></div>
-        <div className="space-y-3">
-          {[1, 2, 3].map((i) => (
-            <div key={i} className="h-12 bg-slate-100 rounded-xl w-full"></div>
-          ))}
-        </div>
-      </div>
-    );
-  }
-
-  // 2. Empty State / Data Invalid Check
-  // PERBAIKAN DI SINI: Kita pastikan triggersData adalah Array
-  const isValidData = Array.isArray(triggersData) && triggersData.length > 0;
-
-  if (!triggersData || !isValidData) {
-    return (
-      <div className="bg-white rounded-3xl p-8 shadow-sm border border-slate-100 mb-8 text-center">
-        <div className="w-12 h-12 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-3 text-slate-400">
-          <Zap size={24} />
-        </div>
-        <h3 className="text-slate-800 font-bold">Belum Ada Data Pemicu</h3>
-        <p className="text-slate-500 text-sm mt-1">
-          Tambahkan tags (seperti "Kerja", "Keluarga") saat mencatat mood untuk melihat analisis ini.
-        </p>
-      </div>
-    );
-  }
-
-  // 3. Render Data (Sekarang aman untuk di-map)
-  const maxCount = Math.max(...triggersData.map((t) => t.count || 0));
+  const [activeTriggerTab, setActiveTriggerTab] = useState("negative");
+  console.log(triggersData);
 
   return (
     <div className="bg-white rounded-3xl p-6 shadow-sm border border-slate-100 mb-8">
-      <div className="flex items-center gap-2 mb-6">
-        <div className="p-2 bg-orange-100 text-orange-600 rounded-lg">
-          <Activity size={20} />
+      <div className="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-4">
+        <div>
+          <h2 className="text-lg font-bold text-slate-800 flex items-center gap-2">
+            Pemicu Emosi
+          </h2>
+          <p className="text-slate-500 text-sm">
+            {activeTriggerTab === "positive" && "Pemicu kebahagiaan terbesarmu"}
+            {activeTriggerTab === "neutral" && "Pemicu ketenanganmu"}
+            {activeTriggerTab === "negative" && "Pemicu stres terbesarmu"}
+          </p>
         </div>
-        <h2 className="text-lg font-bold text-slate-800">Top Triggers</h2>
+
+        {/* Custom Tab Switcher */}
+        <div className="flex bg-slate-100 p-1 rounded-xl self-start md:self-auto">
+          {["positive", "neutral", "negative"].map((tab) => (
+            <button
+              key={tab}
+              onClick={() => setActiveTriggerTab(tab)}
+              className={`px-4 py-2 rounded-lg text-sm font-bold transition-all duration-300 ${
+                activeTriggerTab === tab
+                  ? "bg-white text-slate-800 shadow-sm"
+                  : "text-slate-400 hover:text-slate-600"
+              }`}
+            >
+              {tab === "positive"
+                ? "Positif"
+                : tab === "neutral"
+                  ? "Netral"
+                  : "Negatif"}
+            </button>
+          ))}
+        </div>
       </div>
 
-      <div className="space-y-4">
-        {triggersData.map((item, index) => {
-          const percentage = maxCount > 0 ? Math.round((item.count / maxCount) * 100) : 0;
-          
-          return (
-            <div key={index} className="group">
-              <div className="flex justify-between items-end mb-1">
-                <span className="text-sm font-semibold text-slate-700">
-                  {item.tagName || item.triggerName || "Unknown"}
-                </span>
-                <span className="text-xs font-medium text-slate-500">
-                  {item.count} logs
-                </span>
-              </div>
-              
-              {/* Progress Bar Background */}
-              <div className="w-full bg-slate-100 rounded-full h-2.5 overflow-hidden">
-                {/* Progress Bar Fill */}
-                <div
-                  className="bg-indigo-500 h-2.5 rounded-full transition-all duration-1000 ease-out group-hover:bg-indigo-600"
-                  style={{ width: `${percentage}%` }}
-                ></div>
-              </div>
+      <div className="min-h-[200px]">
+        {loading ? (
+          <div className="h-full flex items-center justify-center text-slate-400 animate-pulse">
+            Loading triggers...
+          </div>
+        ) : triggersData && triggersData[activeTriggerTab] ? (
+          triggersData[activeTriggerTab].isEnoughData ? (
+            <div className="flex flex-col gap-4">
+              {triggersData[activeTriggerTab].tags.map((tag, idx) => {
+                let barColor = "bg-slate-200";
+                if (activeTriggerTab === "positive") barColor = "bg-green-500";
+                else if (activeTriggerTab === "neutral")
+                  barColor = "bg-yellow-500";
+                else if (activeTriggerTab === "negative")
+                  barColor = "bg-red-500";
+
+                return (
+                  <div key={idx} className="flex items-center gap-4">
+                    <div className="w-24 text-sm font-semibold text-slate-600 truncate text-right">
+                      {tag.name}
+                    </div>
+                    <div className="flex-1 h-3 bg-slate-100 rounded-full overflow-hidden relative">
+                      <div
+                        className={`h-full rounded-full ${barColor} transition-all duration-1000 ease-out`}
+                        style={{ width: `${tag.percentage}%` }}
+                      ></div>
+                    </div>
+                    <div className="w-12 text-sm font-bold text-slate-700 text-right">
+                      {tag.count}x
+                    </div>
+                  </div>
+                );
+              })}
             </div>
-          );
-        })}
+          ) : (
+            <div className="flex flex-col items-center justify-center py-10 text-center">
+              <div className="w-16 h-16 bg-slate-50 rounded-full flex items-center justify-center mb-3">
+                <span className="text-2xl">🌱</span>
+              </div>
+              <p className="text-slate-800 font-bold mb-1">
+                Belum ada pola pemicu
+              </p>
+              <p className="text-slate-500 text-sm max-w-xs">
+                Terus catat jurnalmu agar MindMate bisa menganalisis pemicu{" "}
+                {activeTriggerTab === "positive"
+                  ? "kebahagiaanmu"
+                  : activeTriggerTab === "negative"
+                    ? "stresmu"
+                    : "ketenanganmu"}
+                !
+              </p>
+            </div>
+          )
+        ) : (
+          <div className="text-center py-10 text-slate-300">
+            Data tidak tersedia.
+          </div>
+        )}
       </div>
     </div>
   );
