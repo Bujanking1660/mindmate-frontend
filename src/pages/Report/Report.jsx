@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback } from "react";
 import api from "../../api/axiosConfig";
-import DashboardSkeleton from "../Home/components/DashboardSkeleton"; // Pastikan path sesuai
+import DashboardSkeleton from "../Home/components/DashboardSkeleton";
 import ReportCharts from "./components/ReportCharts";
 import MoodStabilityCard from "./components/MoodStabilityCard";
 import MoodTriggersCard from "./components/MoodTriggersCard";

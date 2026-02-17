@@ -74,9 +74,9 @@ const LogDetailModal = ({ isOpen, onClose, data }) => {
                 Catatan Jurnal
               </h3>
             </div>
-            <div className="bg-slate-50 p-4 rounded-2xl border border-slate-100 min-h-20 max-h-37.5 overflow-y-auto">
+            <div className="bg-slate-50 p-4 rounded-2xl border border-slate-100 min-h-20 max-h-40 overflow-y-auto">
               <p className="text-slate-800 text-sm leading-relaxed font-medium">
-                {data.note || "Kamu tidak menulis catatan untuk hari ini."}
+                {data.journalNote || "Tidak ada catatan untuk hari ini."}
               </p>
             </div>
           </div>

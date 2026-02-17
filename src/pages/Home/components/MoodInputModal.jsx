@@ -11,7 +11,7 @@ const MoodInputModal = ({
       <div className="bg-white w-full max-w-lg rounded-[2.5rem] shadow-2xl scale-100 animate-in zoom-in-95 duration-300 relative overflow-hidden flex flex-col max-h-[90vh] border border-slate-100">
         
         {/* Header Gradient */}
-        <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-blue-50 to-transparent pointer-events-none"></div>
+        <div className="absolute top-0 left-0 w-full h-32 bg-linear-to-b from-blue-50 to-transparent pointer-events-none"></div>
         
         {/* Close Button */}
         <button onClick={onClose} className="absolute top-6 right-6 z-20 p-2 bg-white rounded-full hover:bg-slate-100 text-slate-400 hover:text-slate-800 transition-all shadow-sm">
@@ -40,7 +40,7 @@ const MoodInputModal = ({
                     key={m.id} 
                     onClick={() => onMoodChange(m)} 
                     className={`
-                        group flex flex-col items-center gap-3 transition-all duration-300 p-4 rounded-[1.5rem] min-w-[5rem]
+                        group flex flex-col items-center gap-3 transition-all duration-300 p-4 rounded-3xl min-w-20
                         ${isSelected 
                             ? 'bg-slate-800 text-white shadow-lg shadow-slate-800/30 scale-110 -translate-y-2' 
                             : 'bg-slate-50 text-slate-400 hover:bg-slate-100 hover:scale-105'
@@ -93,7 +93,7 @@ const MoodInputModal = ({
                 Catatan Jurnal (Opsional)
              </label>
              <textarea 
-                className="w-full bg-slate-50 border border-slate-200 rounded-2xl p-5 text-sm font-medium text-slate-700 focus:outline-none focus:ring-4 focus:ring-blue-50 focus:border-blue-300 transition-all resize-none min-h-[120px] placeholder:text-slate-400" 
+                className="w-full bg-slate-50 border border-slate-200 rounded-2xl p-5 text-sm font-medium text-slate-700 focus:outline-none focus:ring-4 focus:ring-blue-50 focus:border-blue-300 transition-all resize-none min-h-30 placeholder:text-slate-400" 
                 placeholder="Ceritakan sedikit tentang harimu..." 
                 value={moodNote} 
                 onChange={(e) => onNoteChange(e.target.value)}
