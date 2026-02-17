@@ -41,7 +41,7 @@ const MoodTriggersCard = ({ triggersData, loading }) => {
         </div>
       </div>
 
-      <div className="min-h-[200px]">
+      <div className="min-h-50">
         {loading ? (
           <div className="h-full flex items-center justify-center text-slate-400 animate-pulse">
             Loading triggers...

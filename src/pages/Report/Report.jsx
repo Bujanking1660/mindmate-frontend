@@ -78,11 +78,10 @@ const Report = () => {
     });
     setShowDetailModal(true);
   };
-
-  if (loading) return <DashboardSkeleton />;
-
+  
   return (
     <div className="min-h-screen bg-transparent font-sans pb-20">
+      
       {/* Modal Overlay */}
       <LogDetailModal 
         isOpen={showDetailModal} 
@@ -91,7 +90,7 @@ const Report = () => {
       />
 
       <main className="max-w-6xl mx-auto px-4 py-6">
-        
+        {loading && <DashboardSkeleton />}
         {/* Charts Section */}
         <ReportCharts moodHistory={moodHistory} moodTypes={moodTypes} />
 

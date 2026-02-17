@@ -7,13 +7,13 @@ import MoodCalendar from "./components/MoodCalendar";
 import DailyOverviewCard from "./components/DailyOverviewCard";
 import SideWidgets from "./components/SideWidgets";
 import MoodInputModal from "./components/MoodInputModal";
-import DashboardSkeleton from "./components/DashboardSkeleton"; // Pastikan path skeleton benar
+import DashboardSkeleton from "./components/DashboardSkeleton"; 
 
 const Home = () => {
   const navigate = useNavigate();
 
   // =========================================
-  // 1. STATE MANAGEMENT
+  // 1. STATE MANAGEMENT (LOGIC TETAP SAMA)
   // =========================================
   const [moodHistory, setMoodHistory] = useState([]);
   const [moodTypes, setMoodTypes] = useState([]);
@@ -31,21 +31,20 @@ const Home = () => {
   const [moodNote, setMoodNote] = useState("");
 
   // =========================================
-  // 2. MEMOIZED STYLES & PRELOAD
+  // 2. STYLES & PRELOAD (Updated Colors)
   // =========================================
   const moodStyles = useMemo(() => ({
-    "0": { textColor: "text-[#FFFFFF]", bgGradient: "from-[#7F1D1D] to-[#B91C1C]", shadowColor: "shadow-[#000]/50", image: "/very_sad.png" },
-    "1": { textColor: "text-[#1F2937]", bgGradient: "from-[#C2410C] to-[#FDBA74]", shadowColor: "shadow-[#000]/25", image: "/sad.png" },
-    "2": { textColor: "text-[#0F172A]", bgGradient: "from-[#1E3A8A] to-[#60A5FA]", shadowColor: "shadow-[#000000]/20", image: "/normal.png" },
-    "3": { textColor: "text-[#064E3B]", bgGradient: "from-[#166534] to-[#4ADE80]", shadowColor: "shadow-[#000000]/15", image: "/happy.png" },
-    "4": { textColor: "text-[#083344]", bgGradient: "from-[#0891B2] to-[#67E8F9]", shadowColor: "shadow-[#000]/15", image: "/very_happy.png" }
+    "0": { textColor: "text-red-900", bgGradient: "from-red-400 to-rose-600", shadowColor: "shadow-rose-500/40", image: "/very_sad.png", labelColor: "bg-red-100 text-red-700" },
+    "1": { textColor: "text-orange-900", bgGradient: "from-orange-300 to-amber-500", shadowColor: "shadow-orange-500/40", image: "/sad.png", labelColor: "bg-orange-100 text-orange-700" },
+    "2": { textColor: "text-blue-900", bgGradient: "from-blue-300 to-indigo-500", shadowColor: "shadow-blue-500/40", image: "/normal.png", labelColor: "bg-blue-100 text-blue-700" },
+    "3": { textColor: "text-emerald-900", bgGradient: "from-emerald-300 to-green-500", shadowColor: "shadow-emerald-500/40", image: "/happy.png", labelColor: "bg-emerald-100 text-emerald-700" },
+    "4": { textColor: "text-cyan-900", bgGradient: "from-cyan-300 to-blue-500", shadowColor: "shadow-cyan-500/40", image: "/very_happy.png", labelColor: "bg-cyan-100 text-cyan-700" }
   }), []);
 
   const getMoodStyle = useCallback((id) => {
     return moodStyles[id] || moodStyles[2];
   }, [moodStyles]);
 
-  // OPTIMASI LCP: Preload Gambar
   useEffect(() => {
     Object.values(moodStyles).forEach(style => {
       const img = new Image();
@@ -58,7 +57,8 @@ const Home = () => {
   // =========================================
   useEffect(() => {
     const loadData = async () => {
-      if (!localStorage.getItem("user_token")) {
+      const token = localStorage.getItem("user_token");
+      if (!token) {
         navigate("/login");
         return;
       }
@@ -160,6 +160,7 @@ const Home = () => {
         textColor: style.textColor,
         bgGradient: style.bgGradient,
         shadowColor: style.shadowColor,
+        labelColor: style.labelColor,
         tags: displayTags
       };
     } else {
@@ -167,11 +168,12 @@ const Home = () => {
         id: null,
         status: "No Data",
         time: "--:--",
-        icon: '/default.png',
+        icon: null, // Handle null icon in card
         note: isToday ? "You haven't logged your mood today." : "No data logged for this day.",
         textColor: "text-slate-400",
-        bgGradient: "from-slate-50 to-white",
+        bgGradient: "from-slate-100 to-slate-200",
         shadowColor: "shadow-slate-200",
+        labelColor: "bg-slate-100 text-slate-500",
         tags: []
       };
     }
@@ -273,41 +275,54 @@ const Home = () => {
   // 7. RENDER UI
   // =========================================
   return (
-    <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 pb-24 font-sans text-slate-800 bg-transparent min-h-screen">
+    <div className="min-h-screen font-sans pb-20 animate-in fade-in duration-500 overflow-x-hidden">
       
-      {/* HEADER */}
-      <div className="flex flex-col gap-1 md:gap-2 mb-8">
-        <h1 className="text-2xl md:text-4xl font-bold tracking-tight text-slate-900">Mood Tracker</h1>
-        <p className="text-sm md:text-lg text-slate-500 font-medium">Understand yourself better, one day at a time.</p>
-      </div>
+      {/* Decorative Background */}
+      <div className="fixed top-0 left-0 w-full h-96 bg-linear-to-b from-blue-50/50 to-transparent -z-10" />
 
-      {/* CALENDAR */}
-      <MoodCalendar 
-        daysInMonth={daysInMonth}
-        moodHistory={moodHistory}
-        streakDates={streakDates}
-        selectedDateStr={selectedDateStr}
-        onDateClick={handleDateClick}
-      />
-
-      {isLoading ? (
-        <DashboardSkeleton />
-      ) : (
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 animate-in fade-in duration-500">
-          {/* MAIN CARD */}
-          <DailyOverviewCard 
-            dailyData={dailyData}
-            isViewingToday={isViewingToday}
-            onEdit={handleEditClick}
-            onDelete={handleResetDaily}
-            onCreate={handleOpenCreateModal}
-            selectedDateStr={selectedDateStr}
-          />
-
-          {/* SIDE WIDGETS */}
-          <SideWidgets dailyData={dailyData} />
+      <main className="max-w-6xl mx-auto px-6 py-10">
+        
+        {/* HEADER */}
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-10 gap-2">
+          <div>
+             <h1 className="text-4xl font-black text-slate-800 tracking-tight">Halo, Apa Kabar?</h1>
+             <p className="text-slate-500 font-medium text-lg mt-1">Lacak kebiasaan mood harian kamu disini.</p>
+          </div>
+          <div className="bg-white px-5 py-2 rounded-full shadow-sm border border-slate-100">
+             <span className="text-sm font-bold text-slate-600">
+                {new Date().toLocaleDateString("id-ID", { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}
+             </span>
+          </div>
         </div>
-      )}
+
+        {/* CALENDAR */}
+        <MoodCalendar 
+          daysInMonth={daysInMonth}
+          moodHistory={moodHistory}
+          streakDates={streakDates}
+          selectedDateStr={selectedDateStr}
+          onDateClick={handleDateClick}
+        />
+
+        {isLoading ? (
+          <DashboardSkeleton />
+        ) : (
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 animate-in slide-in-from-bottom-4 duration-700">
+            {/* MAIN CARD (Hero) - Span 5 */}
+            <DailyOverviewCard 
+              dailyData={dailyData}
+              isViewingToday={isViewingToday}
+              onEdit={handleEditClick}
+              onDelete={handleResetDaily}
+              onCreate={handleOpenCreateModal}
+              selectedDateStr={selectedDateStr}
+            />
+
+            {/* SIDE WIDGETS - Span 7 */}
+            <SideWidgets dailyData={dailyData} />
+          </div>
+        )}
+      </main>
 
       {/* MODAL */}
       <MoodInputModal 
@@ -325,7 +340,7 @@ const Home = () => {
         onNoteChange={setMoodNote}
         onSave={handleSaveMood}
       />
-    </main>
+    </div>
   );
 };
 

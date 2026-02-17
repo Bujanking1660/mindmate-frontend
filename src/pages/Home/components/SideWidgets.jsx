@@ -1,41 +1,81 @@
-// src/pages/Home/components/SideWidgets.jsx
+import { Zap, Brain, Quote } from "lucide-react";
+
 const SideWidgets = ({ dailyData }) => {
   return (
-    <div className="lg:col-span-8 flex flex-col gap-6 h-full">
-      {/* Recommended Module */}
-      <div className="bg-linear-to-b from-slate-50 to-white rounded-[2.5rem] p-6 md:p-8 shadow-xl shadow-slate-200/50 border border-white/60 relative overflow-hidden">
-        <div className="absolute bottom-0 left-0 w-40 h-40 bg-slate-100 blur-3xl rounded-full translate-y-1/2 -translate-x-1/2 pointer-events-none"></div>
-        <div className="flex items-center gap-3 mb-6 relative z-10">
-          <span className="bg-white px-4 py-1.5 rounded-xl text-[10px] font-black shadow-sm text-slate-400 tracking-widest border border-slate-100">RECOMMENDED MODULE</span>
+    <div className="lg:col-span-7 flex flex-col gap-6 h-full">
+      
+      {/* 1. Recommended Module (Grid 2 Kolom) */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          
+          {/* Card 1 */}
+          <div className="bg-white p-6 rounded-4xl border border-slate-100 shadow-xl shadow-slate-200/40 hover:shadow-2xl hover:border-blue-200 transition-all cursor-pointer group relative overflow-hidden">
+              <div className="absolute top-0 right-0 p-6 opacity-10 group-hover:opacity-20 transition-opacity">
+                  <Zap size={80} className="text-blue-500" />
+              </div>
+              <div className="w-12 h-12 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                  <Zap size={24} fill="currentColor" />
+              </div>
+              <h4 className="font-black text-slate-800 text-lg mb-1">Maintain Focus</h4>
+              <p className="text-slate-400 text-sm font-medium">10 min • Meditation</p>
+          </div>
+
+          {/* Card 2 */}
+          <div className="bg-white p-6 rounded-4xl border border-slate-100 shadow-xl shadow-slate-200/40 hover:shadow-2xl hover:border-purple-200 transition-all cursor-pointer group relative overflow-hidden">
+             <div className="absolute top-0 right-0 p-6 opacity-10 group-hover:opacity-20 transition-opacity">
+                  <Brain size={80} className="text-purple-500" />
+              </div>
+              <div className="w-12 h-12 bg-purple-50 text-purple-600 rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                  <Brain size={24} fill="currentColor" />
+              </div>
+              <h4 className="font-black text-slate-800 text-lg mb-1">Deep Thinking</h4>
+              <p className="text-slate-400 text-sm font-medium">25 min • Exercise</p>
+          </div>
+
+      </div>
+
+      {/* 2. Latest Journal (Card Panjang ke Bawah) */}
+      <div className="bg-white rounded-[2.5rem] p-8 md:p-10 shadow-xl shadow-slate-200/40 border border-slate-100 flex-1 relative overflow-hidden group">
+        
+        {/* Background Blob */}
+        <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-yellow-50 rounded-full blur-3xl opacity-60"></div>
+
+        <div className="flex items-center gap-3 mb-6">
+            <div className="p-2 bg-slate-100 rounded-xl text-slate-500">
+                <Quote size={20} fill="currentColor" />
+            </div>
+            <span className="text-xs font-black text-slate-400 uppercase tracking-widest">
+                Catatan Jurnal
+            </span>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6 relative z-10">
-          <div className="bg-white p-5 rounded-3xl flex items-center gap-5 shadow-sm hover:shadow-lg hover:border-slate-200 border border-slate-100 transition-all cursor-pointer group">
-            <div className="w-12 h-12 bg-blue-50 text-blue-500 rounded-2xl flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">🧘</div>
-            <div><h4 className="font-bold text-slate-800 text-sm group-hover:text-blue-600">Maintain Focus</h4><p className="text-xs text-slate-400">10 min • Focus</p></div>
-          </div>
-          <div className="bg-white p-5 rounded-3xl flex items-center gap-5 shadow-sm hover:shadow-lg hover:border-slate-200 border border-slate-100 transition-all cursor-pointer group">
-            <div className="w-12 h-12 bg-purple-50 text-purple-500 rounded-2xl flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">🧠</div>
-            <div><h4 className="font-bold text-slate-800 text-sm group-hover:text-purple-600">Deep Learning</h4><p className="text-xs text-slate-400">25 min • Brain</p></div>
-          </div>
+        
+        <div className="relative z-10 h-full flex flex-col">
+            <div className="flex-1 flex items-center justify-center">
+                {dailyData.status === 'No Data' ? (
+                     <p className="text-slate-400 italic text-center font-medium">
+                        Belum ada catatan jurnal untuk hari ini.
+                     </p>
+                ) : (
+                    <div className="relative">
+                         <span className="text-6xl text-slate-100 absolute -top-8 -left-4 font-serif">“</span>
+                         <p className="text-xl md:text-2xl text-slate-700 font-medium italic text-center leading-relaxed">
+                            {dailyData.note}
+                         </p>
+                         <span className="text-6xl text-slate-100 absolute -bottom-10 -right-4 font-serif">”</span>
+                    </div>
+                )}
+            </div>
+            
+            {dailyData.status !== 'No Data' && (
+                <div className="mt-8 pt-6 border-t border-slate-100 flex justify-between items-center">
+                    <span className="text-sm font-bold text-slate-400">Written at</span>
+                    <span className="bg-slate-50 px-3 py-1 rounded-lg text-sm font-bold text-slate-600">
+                        {dailyData.time}
+                    </span>
+                </div>
+            )}
         </div>
       </div>
 
-      {/* Latest Journal */}
-      <div className="bg-white rounded-[2.5rem] p-6 md:p-8 shadow-xl shadow-slate-200/50 grow border border-white/60 flex flex-col min-h-50 relative overflow-hidden group hover:shadow-2xl transition-shadow">
-        <div className="absolute top-1/2 left-1/2 w-full h-full bg-slate-50/50 blur-3xl rounded-full -translate-x-1/2 -translate-y-1/2 pointer-events-none group-hover:bg-slate-100/50 transition-colors"></div>
-        <div className="flex justify-between items-start mb-4 relative z-10">
-          <span className="bg-slate-100 px-4 py-1.5 rounded-xl text-[10px] font-black shadow-sm text-slate-500 tracking-widest">LATEST JOURNAL</span>
-        </div>
-        <div className="grow flex flex-col justify-center relative z-10">
-          <div className="bg-slate-50/80 backdrop-blur-sm p-6 rounded-3xl border border-slate-100 relative">
-            <span className="absolute top-4 left-4 text-4xl text-slate-200 font-serif leading-none">“</span>
-            <p className={`text-sm md:text-lg font-medium leading-relaxed italic px-4 text-center ${dailyData.status === 'No Data' ? 'text-slate-400' : 'text-slate-700'}`}>
-              {dailyData.note}
-            </p>
-            <span className="absolute bottom-4 right-4 text-4xl text-slate-200 font-serif leading-none rotate-180">“</span>
-          </div>
-        </div>
-      </div>
     </div>
   );
 };
