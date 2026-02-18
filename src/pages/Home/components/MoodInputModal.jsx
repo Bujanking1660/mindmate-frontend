@@ -99,7 +99,7 @@ const MoodInputModal = ({
           )}
 
           {/* Note Area */}
-          <div className="mb-6 flex-1 min-h-[80px]">
+          <div className="mb-6 flex-1 min-h-20">
              <label className="text-[10px] sm:text-xs font-black text-slate-400 uppercase tracking-widest mb-2 block ml-1">
                 Catatan
              </label>
