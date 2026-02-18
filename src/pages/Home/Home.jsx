@@ -2,6 +2,9 @@ import { useState, useEffect, useMemo, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../../api/axiosConfig";
 
+// --- 1. IMPORT ASSETS CONFIG ---
+import { getMoodImage, MASKOT_IMAGES } from "../../utils/assetsConfig"; 
+
 // Components
 import MoodCalendar from "./components/MoodCalendar";
 import DailyOverviewCard from "./components/DailyOverviewCard";
@@ -9,12 +12,13 @@ import SideWidgets from "./components/SideWidgets";
 import MoodInputModal from "./components/MoodInputModal";
 import DashboardSkeleton from "./components/DashboardSkeleton";
 import ModuleDetailModal from "./components/ModuleDetailModal";
+import AlertModal from "../../components/AlertModal"; 
 
 const Home = () => {
   const navigate = useNavigate();
 
   // =========================================
-  // 1. STATE MANAGEMENT (LOGIC TETAP SAMA)
+  // STATE MANAGEMENT
   // =========================================
   const [moodHistory, setMoodHistory] = useState([]);
   const [moodTypes, setMoodTypes] = useState([]);
@@ -34,8 +38,23 @@ const Home = () => {
   const [selectedTagIds, setSelectedTagIds] = useState([]);
   const [moodNote, setMoodNote] = useState("");
 
+  // --- NEW: Alert Modal State ---
+  const [alertState, setAlertState] = useState({
+    isOpen: false,
+    title: "",
+    message: "",
+    type: "info",     // success, error, warning, info
+    showCancel: false,
+    confirmText: "Oke",
+    onConfirm: null,  // Fungsi yang dijalankan saat tombol konfirmasi diklik
+  });
+
+  const closeAlert = () => {
+    setAlertState((prev) => ({ ...prev, isOpen: false }));
+  };
+
   // =========================================
-  // 2. STYLES & PRELOAD (Updated Colors)
+  // 2. STYLES & PRELOAD (UPDATED PAKE ASSETS)
   // =========================================
   const moodStyles = useMemo(
     () => ({
@@ -43,35 +62,35 @@ const Home = () => {
         textColor: "text-red-900",
         bgGradient: "from-red-400 to-rose-600",
         shadowColor: "shadow-rose-500/40",
-        image: "/very_sad.png",
+        image: getMoodImage(1), 
         labelColor: "bg-red-100 text-red-700",
       },
       1: {
         textColor: "text-orange-900",
         bgGradient: "from-orange-300 to-amber-500",
         shadowColor: "shadow-orange-500/40",
-        image: "/sad.png",
+        image: getMoodImage(2),
         labelColor: "bg-orange-100 text-orange-700",
       },
       2: {
         textColor: "text-blue-900",
         bgGradient: "from-blue-300 to-indigo-500",
         shadowColor: "shadow-blue-500/40",
-        image: "/normal.png",
+        image: getMoodImage(3),
         labelColor: "bg-blue-100 text-blue-700",
       },
       3: {
         textColor: "text-emerald-900",
         bgGradient: "from-emerald-300 to-green-500",
         shadowColor: "shadow-emerald-500/40",
-        image: "/happy.png",
+        image: getMoodImage(4),
         labelColor: "bg-emerald-100 text-emerald-700",
       },
       4: {
         textColor: "text-cyan-900",
         bgGradient: "from-cyan-300 to-blue-500",
         shadowColor: "shadow-cyan-500/40",
-        image: "/very_happy.png",
+        image: getMoodImage(5),
         labelColor: "bg-cyan-100 text-cyan-700",
       },
     }),
@@ -85,6 +104,7 @@ const Home = () => {
     [moodStyles],
   );
 
+  // Preload Image
   useEffect(() => {
     Object.values(moodStyles).forEach((style) => {
       const img = new Image();
@@ -166,7 +186,6 @@ const Home = () => {
       ),
     );
     const todayStr = new Date().toLocaleDateString("en-CA");
-
     let checkDate = new Date();
     if (!loggedDates.has(todayStr)) checkDate.setDate(checkDate.getDate() - 1);
 
@@ -229,10 +248,10 @@ const Home = () => {
         id: null,
         status: "No Data",
         time: "--:--",
-        icon: null, // Handle null icon in card
+        icon: null,
         note: isToday
-          ? "You haven't logged your mood today."
-          : "No data logged for this day.",
+          ? "Kamu belum mengisi mood hari ini."
+          : "Tidak ada data mood pada tanggal ini.",
         textColor: "text-slate-400",
         bgGradient: "from-slate-100 to-slate-200",
         shadowColor: "shadow-slate-200",
@@ -250,7 +269,7 @@ const Home = () => {
   }, [selectedMood, allTags]);
 
   // =========================================
-  // 6. HANDLERS
+  // 6. HANDLERS (LOGIC ALERT DITAMBAHKAN DISINI)
   // =========================================
   const handleDateClick = useCallback((day) => {
     const now = new Date();
@@ -317,8 +336,13 @@ const Home = () => {
     setShowMoodModal(true);
   };
 
+  // --- UPDATED: Simpan dengan Alert ---
   const handleSaveMood = async () => {
     if (!selectedMood) return;
+    
+    // Tutup modal input dulu
+    setShowMoodModal(false);
+
     const payload = {
       moodTypeId: selectedMood.id,
       journalNote: moodNote,
@@ -334,37 +358,103 @@ const Home = () => {
           logDate: new Date().toISOString(),
         });
       }
+      
+      // Refresh Data
       const { data } = await api.get("/mood");
       setMoodHistory(data.data || []);
-      setShowMoodModal(false);
+      
+      // Reset Form
       setIsEditing(false);
       setSelectedTagIds([]);
       setMoodNote("");
+
+      // Show Success Alert
+      setAlertState({
+        isOpen: true,
+        type: "success",
+        title: "Berhasil!",
+        message: isEditing ? "Mood kamu berhasil diperbarui." : "Mood hari ini berhasil dicatat!",
+        showCancel: false,
+        confirmText: "Mantap",
+        onConfirm: closeAlert
+      });
+
     } catch (error) {
       console.error("Gagal save:", error);
-      alert("Gagal menyimpan data.");
+      // Show Error Alert
+      setAlertState({
+        isOpen: true,
+        type: "error",
+        title: "Gagal Menyimpan",
+        message: "Terjadi kesalahan saat menyimpan data. Coba lagi ya.",
+        showCancel: false,
+        confirmText: "Tutup",
+        onConfirm: closeAlert
+      });
+      // Buka lagi modal input kalo gagal (opsional)
+      setShowMoodModal(true);
     }
   };
 
-  const handleResetDaily = async () => {
+  // --- UPDATED: Hapus dengan Konfirmasi Alert ---
+  const handleResetDaily = () => {
     if (!dailyData.id) return;
-    if (!window.confirm("Hapus data mood ini?")) return;
+
+    // Tampilkan Alert Konfirmasi
+    setAlertState({
+      isOpen: true,
+      type: "warning",
+      title: "Hapus Mood?",
+      message: "Yakin ingin menghapus mood hari ini? Data tidak bisa dikembalikan.",
+      showCancel: true,
+      confirmText: "Ya, Hapus",
+      onConfirm: processDelete // Panggil fungsi proses hapus jika User klik Ya
+    });
+  };
+
+  const processDelete = async () => {
     try {
       await api.delete(`/mood/${dailyData.id}`);
       const { data } = await api.get("/mood");
       setMoodHistory(data.data || []);
+      
+      // Tampilkan Alert Sukses Hapus
+      setAlertState({
+        isOpen: true,
+        type: "success",
+        title: "Terhapus",
+        message: "Data mood berhasil dihapus.",
+        showCancel: false,
+        confirmText: "Oke",
+        onConfirm: closeAlert
+      });
     } catch (error) {
       console.error("Gagal hapus:", error);
-      alert("Gagal menghapus data.");
+      setAlertState({
+        isOpen: true,
+        type: "error",
+        title: "Gagal",
+        message: "Gagal menghapus data mood.",
+        showCancel: false,
+        confirmText: "Tutup",
+        onConfirm: closeAlert
+      });
     }
   };
 
   const handleOpenModule = () => {
-    // Cek apakah ada data mood hari ini
     if (dailyData && dailyData.moodTypeId !== undefined) {
       setShowModuleModal(true);
     } else {
-      alert("Silakan isi mood hari ini dulu!");
+      setAlertState({
+        isOpen: true,
+        type: "info",
+        title: "Belum Ada Mood",
+        message: "Silakan isi mood hari ini dulu untuk melihat modul rekomendasi.",
+        showCancel: false,
+        confirmText: "Oke",
+        onConfirm: closeAlert
+      });
     }
   };
 
@@ -377,19 +467,31 @@ const Home = () => {
   return (
     <div className="min-h-screen font-sans pb-20 animate-in fade-in duration-500 overflow-x-hidden">
       {/* Decorative Background */}
-      <div className="fixed top-0 left-0 w-full h-96 bg-linear-to-b from-blue-50/50 to-transparent -z-10" />
+      <div className="fixed top-0 left-0 w-full h-96 bg-gradient-to-b from-blue-50/50 to-transparent -z-10" />
       <main className="max-w-6xl mx-auto px-6 py-10">
-        {/* HEADER */}
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-10 gap-2">
-          <div>
-            <h1 className="text-4xl font-black text-slate-800 tracking-tight">
-              Halo, Apa Kabar?
-            </h1>
-            <p className="text-slate-500 font-medium text-lg mt-1">
-              Lacak kebiasaan mood harian kamu disini.
-            </p>
+        
+        {/* HEADER dengan MASKOT */}
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-10 gap-4">
+          <div className="flex items-center gap-4">
+             {/* Maskot Image */}
+             <div className="hidden md:block w-20 h-20">
+               <img 
+                 src={MASKOT_IMAGES.default} 
+                 alt="Mascot" 
+                 className="w-full h-full object-contain hover:scale-110 transition-transform duration-300 drop-shadow-sm"
+               />
+             </div>
+             <div>
+                <h1 className="text-4xl font-black text-slate-800 tracking-tight">
+                  Halo, Apa Kabar?
+                </h1>
+                <p className="text-slate-500 font-medium text-lg mt-1">
+                  Lacak kebiasaan mood harian kamu disini.
+                </p>
+             </div>
           </div>
-          <div className="bg-white px-5 py-2 rounded-full shadow-sm border border-slate-100">
+          
+          <div className="bg-white px-5 py-2 rounded-full shadow-sm border border-slate-100 self-start md:self-end">
             <span className="text-sm font-bold text-slate-600">
               {new Date().toLocaleDateString("id-ID", {
                 weekday: "long",
@@ -419,7 +521,7 @@ const Home = () => {
               dailyData={dailyData}
               isViewingToday={isViewingToday}
               onEdit={handleEditClick}
-              onDelete={handleResetDaily}
+              onDelete={handleResetDaily} // Function now triggers AlertModal
               onCreate={handleOpenCreateModal}
               selectedDateStr={selectedDateStr}
             />
@@ -432,15 +534,15 @@ const Home = () => {
           </div>
         )}
       </main>
-      {/* 2. RENDER MODULE DETAIL MODAL DISINI */}
-      {/* Pastikan ini ada agar Pop-up muncul! */}
+
+      {/* --- MODALS SECTION --- */}
+      
       <ModuleDetailModal
         isOpen={showModuleModal}
         onClose={() => setShowModuleModal(false)}
         moodTypeId={dailyData.moodTypeId}
-      />{" "}
-      {/* <--- TAMBAHAN PENTING */}
-      {/* MODAL INPUT MOOD (Yang lama) */}
+      />
+      
       <MoodInputModal
         isOpen={showMoodModal}
         onClose={() => {
@@ -459,6 +561,19 @@ const Home = () => {
         onNoteChange={setMoodNote}
         onSave={handleSaveMood}
       />
+
+      {/* Alert Modal (Pemberitahuan & Konfirmasi) */}
+      <AlertModal 
+        isOpen={alertState.isOpen}
+        title={alertState.title}
+        message={alertState.message}
+        type={alertState.type}
+        showCancel={alertState.showCancel}
+        confirmText={alertState.confirmText}
+        onClose={closeAlert}
+        onConfirm={alertState.onConfirm || closeAlert}
+      />
+
     </div>
   );
 };
