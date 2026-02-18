@@ -55,7 +55,6 @@ const Report = () => {
 
   // --- 2. MODAL HANDLER ---
   const handleLogClick = (logEntry) => {
-    // Format data for modal
     const type = moodTypes.find((t) => t.id === logEntry.moodTypeId);
     let tags = [];
     if (logEntry.moodLogTags && Array.isArray(logEntry.moodLogTags)) {
@@ -90,22 +89,32 @@ const Report = () => {
       />
 
       <main className="max-w-6xl mx-auto px-4 py-6">
-        {loading && <DashboardSkeleton />}
-        {/* Charts Section */}
-        <ReportCharts moodHistory={moodHistory} moodTypes={moodTypes} />
+        
+        {/* LOGIKA PERBAIKAN DI SINI */}
+        {loading ? (
+            // 1. Jika Loading: Tampilkan Skeleton SAJA
+            <DashboardSkeleton />
+        ) : (
+            // 2. Jika Selesai Loading: Tampilkan Konten Asli
+            <div className="animate-in fade-in duration-500 space-y-6">
+                
+                {/* Charts Section */}
+                <ReportCharts moodHistory={moodHistory} moodTypes={moodTypes} />
 
-        {/* Stability Section */}
-        <MoodStabilityCard stabilityData={stabilityData} />
+                {/* Stability Section */}
+                <MoodStabilityCard stabilityData={stabilityData} />
 
-        {/* Triggers Section */}
-        <MoodTriggersCard triggersData={triggersData} loading={loading} />
+                {/* Triggers Section */}
+                <MoodTriggersCard triggersData={triggersData} />
 
-        {/* Calendar Section */}
-        <MoodCalendar 
-          moodHistory={moodHistory} 
-          moodTypes={moodTypes} 
-          onDayClick={handleLogClick} 
-        />
+                {/* Calendar Section */}
+                <MoodCalendar 
+                    moodHistory={moodHistory} 
+                    moodTypes={moodTypes} 
+                    onDayClick={handleLogClick} 
+                />
+            </div>
+        )}
 
       </main>
     </div>

@@ -7,6 +7,7 @@ import MainLayout from "./layouts/MainLayout";
 import Register from "./pages/Register/Register";
 import GoogleCallback from "./pages/Oauth/GoogleCallback";
 import LandingPage from "./pages/LandingPage/LandingPage";
+import NotFound from "./pages/NotFound";
 function App() {
   return (
     <Router>
@@ -21,6 +22,8 @@ function App() {
           <Route path="/report" element={<Report />} />
           <Route path="/profile" element={<Profile />} />
         </Route>
+
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>
   );

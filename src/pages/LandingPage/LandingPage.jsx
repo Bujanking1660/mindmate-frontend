@@ -54,6 +54,7 @@ const LandingPage = () => {
           {/* Right: Mascot Image */}
           <div className="flex-1 flex justify-center lg:justify-end relative">
             <img 
+              draggable="false"
               src="/chick-wave.png" 
               alt="Mascot waving hello" 
               className="w-64 md:w-80 lg:w-[1000px] object-contain animate-[bounce_3s_infinite]"
@@ -82,6 +83,7 @@ const LandingPage = () => {
           {/* Left: Mascot Image */}
           <div className="flex-1 flex justify-center lg:justify-start">
              <img 
+              draggable="false"
               src="/chick-think.png" 
               alt="Mascot thinking about triggers" 
               className="w-56 md:w-72 lg:w-[1000px] object-contain"
@@ -125,6 +127,7 @@ const LandingPage = () => {
             <div className="bg-white p-8 rounded-3xl shadow-sm hover:shadow-md transition-shadow duration-300 border border-slate-100 relative overflow-visible">
                <div className="absolute -top-16 right-4 z-10">
                   <img 
+                      draggable="false"
                     src="/chick-detective.png" 
                     alt="Detective Mascot" 
                     className="w-32 md:w-40 object-contain"
@@ -210,6 +213,7 @@ const LandingPage = () => {
             
             {/* Gambar diposisikan absolut ke kiri dari tengah */}
             <img 
+              draggable="false"
               src="/chick-run.png" 
               alt="Mascot running" 
               className="absolute right-1/2 mr-32 w-48 md:w-50 object-contain z-10"
@@ -233,6 +237,7 @@ const LandingPage = () => {
           <div className="flex items-center gap-2">
             <div className="font-bold text-xl text-slate-900">MindMate</div>
             <img 
+              draggable="false"
               src="/chick-sleep.png" 
               alt="Mascot sleeping" 
               className="w-12 md:w-16 object-contain"

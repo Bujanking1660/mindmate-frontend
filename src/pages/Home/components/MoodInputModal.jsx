@@ -8,10 +8,10 @@ const MoodInputModal = ({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-md p-4 animate-in fade-in duration-300">
       
-      <div className="bg-white w-full max-w-lg rounded-[2rem] shadow-2xl scale-100 animate-in zoom-in-95 duration-300 relative overflow-hidden flex flex-col max-h-[90vh] border border-slate-100">
+      <div className="bg-white w-full max-w-lg rounded-4xl shadow-2xl scale-100 animate-in zoom-in-95 duration-300 relative overflow-hidden flex flex-col max-h-[90vh] border border-slate-100">
         
         {/* Header Gradient */}
-        <div className="absolute top-0 left-0 w-full h-24 bg-gradient-to-b from-blue-50 to-transparent pointer-events-none"></div>
+        <div className="absolute top-0 left-0 w-full h-24 bg-linear-to-b from-blue-50 to-transparent pointer-events-none"></div>
         
         {/* Close Button */}
         <button onClick={onClose} className="absolute top-4 right-4 z-20 p-2 bg-white/80 backdrop-blur-sm rounded-full hover:bg-slate-100 text-slate-400 hover:text-slate-800 transition-all shadow-sm">
@@ -42,7 +42,7 @@ const MoodInputModal = ({
                     onClick={() => onMoodChange(m)} 
                     className={`
                       group flex flex-col items-center justify-center gap-1.5 transition-all duration-300 
-                      rounded-2xl border border-transparent w-full aspect-[3/4] sm:aspect-square
+                      rounded-2xl border border-transparent w-full aspect-3/4 sm:aspect-square
                       
                       ${isSelected 
                           ? 'bg-slate-800 text-white shadow-lg shadow-slate-800/30 scale-105 -translate-y-1' 
