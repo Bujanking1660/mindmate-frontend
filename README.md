@@ -60,11 +60,7 @@ Environment variables
 
 Create a `.env` file at the project root of the frontend or set these in your environment. The app expects:
 
-- `VITE_API_URL` — Base URL of the MindMate backend API. Example:
-
-```
-VITE_API_URL=http://localhost:3000
-```
+- `VITE_API_URL` — Base URL of the MindMate backend API.
 
 Notes about auth and API
 - The app uses cookies for session/refresh token handling and stores a short-lived JWT in `localStorage` for `Authorization` headers.
