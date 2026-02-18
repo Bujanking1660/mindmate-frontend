@@ -41,7 +41,7 @@ const Profile = () => {
         navigate("/login");
         return;
       }
-      try {
+      try { 
         const response = await api.get("/user");
         setUserData(response.data.data);
         setLoading(false);
@@ -55,8 +55,9 @@ const Profile = () => {
         }
       }
     };
+
     fetchProfile();
-  }, [navigate]);
+  }, [navigate])
 
   // --- UPDATE DATA ---
   const handleUpdateProfile = async (updatedData) => {
@@ -111,7 +112,7 @@ const Profile = () => {
 
   // --- LOGIC STREAK ---
   const streakCount = userData?.currentStreak?.length || 0;
-  const isStreakActive = streakCount > 1;
+  const isStreakActive = streakCount >= 1;
 
   // --- RENDER: LOADING ---
   if (loading) {
