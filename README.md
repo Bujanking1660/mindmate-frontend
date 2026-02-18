@@ -1,17 +1,110 @@
-# React + Vite
+# MindMate — Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Front-end single-page application for the MindMate project. Built with Vite and React, it connects to the MindMate backend API to provide user authentication, mood logging, analytics, and profile management.
 
-Currently, two official plugins are available:
+Tech stack
+- Vite + React
+- Tailwind CSS
+- Axios for API requests
+- Recharts for charts
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Features
+- Authentication (login/register, OAuth support)
+- Mood logging and mood types
+- Analytics and reporting pages
+- File uploads (profile photo)
 
-## React Compiler
+Quick start
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Prerequisites
+- Node.js (recommended v18+)
+- npm (or yarn / pnpm)
 
-## Expanding the ESLint configuration
+Install dependencies
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
-# mindmate-frontend
+```bash
+npm install
+```
+
+Run development server
+
+```bash
+npm run dev
+```
+
+Build for production
+
+```bash
+npm run build
+```
+
+Preview production build locally
+
+```bash
+npm run preview
+```
+
+Lint the codebase
+
+```bash
+npm run lint
+```
+
+Available npm scripts (from package.json)
+- `dev` — start Vite dev server
+- `build` — build production assets
+- `preview` — preview production build
+- `lint` — run ESLint
+
+Environment variables
+
+Create a `.env` file at the project root of the frontend or set these in your environment. The app expects:
+
+- `VITE_API_URL` — Base URL of the MindMate backend API.
+
+Notes about auth and API
+- The app uses cookies for session/refresh token handling and stores a short-lived JWT in `localStorage` for `Authorization` headers.
+- Token refresh logic and request retry handling are implemented in [src/api/axiosConfig.js](src/api/axiosConfig.js). If refresh fails, the user is redirected to `/login`.
+
+Project structure (important)
+- `src/main.jsx` — application bootstrap
+- `src/App.jsx` — routes and layout
+- `src/api/axiosConfig.js` — Axios instance + interceptors for auth
+- `src/components` — reusable components (Navbar, AlertModal, etc.)
+- `src/pages` — top-level pages (Home, Profile, Login, Register, Report)
+
+Backend integration
+- The frontend expects the backend to provide JSON REST endpoints under `VITE_API_URL`, including `/auth/*`, `/users`, `/moods`, and analytics routes used in `src/services`.
+- Ensure the backend sends HttpOnly refresh cookies and a JSON response containing the access token when calling `/auth/refresh` (see `src/api/axiosConfig.js` behavior).
+
+Deployment
+- Build with `npm run build` and deploy the `/dist` folder to your static host (Netlify, Vercel, GitHub Pages with proper routing, or served by the backend).
+- For SPA routing, configure your hosting to fallback to `index.html`.
+
+Development tips
+- Run the backend on a separate port and set `VITE_API_URL` accordingly.
+- Use the browser devtools Application tab to inspect cookies/localStorage when troubleshooting auth.
+
+Testing & linting
+- Lint: `npm run lint`
+- There are no automated tests in this repo by default. Add tests and scripts as needed.
+
+Contributing
+- Fork the repo, work on a branch, and open a PR with a clear description.
+- Run `npm run lint` and ensure formatting/lint rules pass before submitting.
+
+Troubleshooting
+- 401 errors: check `VITE_API_URL`, cookie settings (secure/domain), and CORS on the backend.
+- Uploads failing: confirm `multipart/form-data` endpoints and `multer`/storage config on backend.
+
+Resources & references
+- Axios config: [src/api/axiosConfig.js](src/api/axiosConfig.js)
+- API service wrappers: `src/api` and `src/services`
+
+License
+- See the repository root LICENSE file.
+
+Contact
+- For questions about the frontend implementation, review files under `src/` or ask the project maintainer.
+
+---
