@@ -108,5 +108,3 @@ Contact
 - For questions about the frontend implementation, review files under `src/` or ask the project maintainer.
 
 ---
-
-If you'd like, I can add screenshots, a short architecture diagram, or deploy instructions (Vercel/Netlify) and create a small CI workflow. Tell me which additions you want.
