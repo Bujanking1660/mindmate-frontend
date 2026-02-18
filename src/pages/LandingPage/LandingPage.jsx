@@ -1,6 +1,14 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { ArrowRight, Brain, ShieldCheck, TrendingUp, Activity } from "lucide-react";
+import {
+  ArrowRight,
+  Brain,
+  ShieldCheck,
+  TrendingUp,
+  Activity,
+  Flame,
+  Calendar,
+} from "lucide-react";
 
 const LandingPage = () => {
   return (
@@ -11,11 +19,21 @@ const LandingPage = () => {
           MindMate
         </div>
         <div className="hidden md:flex gap-8 text-slate-500 font-medium">
-          <a href="#features" className="hover:text-slate-800 transition-colors">Fitur</a>
-          <a href="#why-mindmate" className="hover:text-slate-800 transition-colors">Mengapa MindMate?</a>
+          <a
+            href="#features"
+            className="hover:text-slate-800 transition-colors"
+          >
+            Fitur
+          </a>
+          <a
+            href="#why-mindmate"
+            className="hover:text-slate-800 transition-colors"
+          >
+            Mengapa MindMate?
+          </a>
         </div>
-        <Link 
-          to="/login" 
+        <Link
+          to="/login"
           className="px-6 py-2.5 bg-slate-900 text-white rounded-full font-semibold hover:bg-slate-800 transition-all shadow-sm hover:shadow-md"
         >
           Mulai Jurnal
@@ -27,7 +45,7 @@ const LandingPage = () => {
         {/* Background Blobs */}
         <div className="absolute top-0 right-0 -mr-20 -mt-20 w-[600px] h-[600px] bg-[#E0F2FE] rounded-full blur-3xl opacity-50 -z-10"></div>
         <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-[400px] h-[400px] bg-slate-200 rounded-full blur-3xl opacity-30 -z-10"></div>
-        
+
         <div className="max-w-7xl mx-auto px-6 flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
           {/* Left: Text Content */}
           <div className="flex-1 text-center lg:text-left z-10">
@@ -38,11 +56,13 @@ const LandingPage = () => {
               </span>
             </h1>
             <p className="text-lg md:text-xl text-slate-500 mb-10 leading-relaxed max-w-2xl mx-auto lg:mx-0">
-              Berhenti menebak-nebak apa yang membuatmu cemas. MindMate mengubah perasaan abstrakmu menjadi data konkret untuk kesehatan mental yang lebih stabil.
+              Berhenti menebak-nebak apa yang membuatmu cemas. MindMate mengubah
+              perasaan abstrakmu menjadi data konkret untuk kesehatan mental
+              yang lebih stabil.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start items-center">
-              <Link 
-                to="/login" 
+              <Link
+                to="/login"
                 className="px-8 py-4 bg-slate-900 text-white rounded-full font-bold text-lg hover:bg-slate-800 transition-all transform hover:scale-105 shadow-lg shadow-sky-100 flex items-center gap-2 group"
               >
                 Mulai Jurnal Pertamamu
@@ -53,10 +73,10 @@ const LandingPage = () => {
 
           {/* Right: Mascot Image */}
           <div className="flex-1 flex justify-center lg:justify-end relative">
-            <img 
+            <img
               draggable="false"
-              src="/chick-wave.png" 
-              alt="Mascot waving hello" 
+              src="/chick-wave.png"
+              alt="Mascot waving hello"
               className="w-64 md:w-80 lg:w-[1000px] object-contain animate-[bounce_3s_infinite]"
             />
           </div>
@@ -66,30 +86,35 @@ const LandingPage = () => {
       {/* 3. The Reality Section (Fact & Problem) */}
       <section id="why-mindmate" className="py-24 bg-white relative">
         <div className="max-w-7xl mx-auto px-6 flex flex-col lg:flex-row-reverse items-center gap-12">
-          
           {/* Right: Text Block (Visual order right on desktop) */}
           <div className="flex-1 text-center lg:text-left">
-             <div className="inline-block px-4 py-1 bg-red-50 text-red-500 rounded-full text-sm font-semibold mb-6">
+            <div className="inline-block px-4 py-1 bg-red-50 text-red-500 rounded-full text-sm font-semibold mb-6">
               Fact & Problem
             </div>
             <h2 className="text-3xl md:text-4xl font-bold mb-6 text-slate-900">
               Mengingat Perasaan Secara Akurat Itu Sulit.
             </h2>
             <p className="text-lg text-slate-500 leading-relaxed">
-              60% Gen Z mengalami fluktuasi mood dan kecemasan tingkat tinggi. Namun, mengandalkan ingatan saja sering kali membuat kita mengalami <strong className="text-slate-800">"Kebutaan Pemicu" (Trigger Blindness)</strong>. Kamu tahu kamu stres, tapi kamu tidak tahu pasti apa penyebab utamanya. Jurnal kertas biasa tidak bisa memberimu jawaban.
+              60% Gen Z mengalami fluktuasi mood dan kecemasan tingkat tinggi.
+              Namun, mengandalkan ingatan saja sering kali membuat kita
+              mengalami{" "}
+              <strong className="text-slate-800">
+                "Kebutaan Pemicu" (Trigger Blindness)
+              </strong>
+              . Kamu tahu kamu stres, tapi kamu tidak tahu pasti apa penyebab
+              utamanya. Jurnal kertas biasa tidak bisa memberimu jawaban.
             </p>
           </div>
 
           {/* Left: Mascot Image */}
           <div className="flex-1 flex justify-center lg:justify-start">
-             <img 
+            <img
               draggable="false"
-              src="/chick-think.png" 
-              alt="Mascot thinking about triggers" 
+              src="/chick-think.png"
+              alt="Mascot thinking about triggers"
               className="w-56 md:w-72 lg:w-[1000px] object-contain"
             />
           </div>
-
         </div>
       </section>
 
@@ -97,7 +122,9 @@ const LandingPage = () => {
       <section id="features" className="py-24 bg-slate-50 relative">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-16 relative">
-             <h2 className="text-3xl md:text-4xl font-bold text-slate-900">Fitur Unggulan</h2>
+            <h2 className="text-3xl md:text-4xl font-bold text-slate-900">
+              Fitur Unggulan
+            </h2>
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
@@ -106,9 +133,12 @@ const LandingPage = () => {
               <div className="w-14 h-14 bg-sky-50 rounded-2xl flex items-center justify-center mb-6 text-sky-500">
                 <Brain className="w-8 h-8" />
               </div>
-              <h3 className="text-xl font-bold mb-3 text-slate-900">Catat dalam Hitungan Detik</h3>
+              <h3 className="text-xl font-bold mb-3 text-slate-900">
+                Catat dalam Hitungan Detik
+              </h3>
               <p className="text-slate-500 leading-relaxed">
-                Ganti narasi panjang yang melelahkan dengan skala skor mood 1-5 dan Feeling Tags yang spesifik. Cepat, tepat, dan real-time.
+                Ganti narasi panjang yang melelahkan dengan skala skor mood 1-5
+                dan Feeling Tags yang spesifik. Cepat, tepat, dan real-time.
               </p>
             </div>
 
@@ -117,28 +147,36 @@ const LandingPage = () => {
               <div className="w-14 h-14 bg-indigo-50 rounded-2xl flex items-center justify-center mb-6 text-indigo-500">
                 <TrendingUp className="w-8 h-8" />
               </div>
-              <h3 className="text-xl font-bold mb-3 text-slate-900">Analisis Stabilitas Emosi</h3>
+              <h3 className="text-xl font-bold mb-3 text-slate-900">
+                Analisis Stabilitas Emosi
+              </h3>
               <p className="text-slate-500 leading-relaxed">
-                Biarkan sistem menghitung tingkat fluktuasi emosimu setiap minggu. Ketahui seberapa stabil kesehatan mentalmu tanpa perlu analisis manual.
+                Biarkan sistem menghitung tingkat fluktuasi emosimu setiap
+                minggu. Ketahui seberapa stabil kesehatan mentalmu tanpa perlu
+                analisis manual.
               </p>
             </div>
 
             {/* Card 3 with Mascot */}
             <div className="bg-white p-8 rounded-3xl shadow-sm hover:shadow-md transition-shadow duration-300 border border-slate-100 relative overflow-visible">
-               <div className="absolute -top-16 right-4 z-10">
-                  <img 
-                      draggable="false"
-                    src="/chick-detective.png" 
-                    alt="Detective Mascot" 
-                    className="w-32 md:w-40 object-contain"
-                  />
-               </div>
+              <div className="absolute -top-16 right-4 z-10">
+                <img
+                  draggable="false"
+                  src="/chick-detective.png"
+                  alt="Detective Mascot"
+                  className="w-32 md:w-40 object-contain"
+                />
+              </div>
               <div className="w-14 h-14 bg-emerald-50 rounded-2xl flex items-center justify-center mb-6 text-emerald-500">
                 <ShieldCheck className="w-8 h-8" />
               </div>
-              <h3 className="text-xl font-bold mb-3 text-slate-900 pt-2">Temukan Pemicu Stresmu</h3>
+              <h3 className="text-xl font-bold mb-3 text-slate-900 pt-2">
+                Temukan Pemicu Stresmu
+              </h3>
               <p className="text-slate-500 leading-relaxed">
-                Otomatis temukan korelasi antara aktivitas harianmu dengan emosi negatif. Ketahui apa yang harus dihindari sebelum stres memburuk.
+                Otomatis temukan korelasi antara aktivitas harianmu dengan emosi
+                negatif. Ketahui apa yang harus dihindari sebelum stres
+                memburuk.
               </p>
             </div>
           </div>
@@ -152,11 +190,12 @@ const LandingPage = () => {
           {/* Left Content */}
           <div className="flex-1">
             <h2 className="text-3xl md:text-5xl font-bold mb-6 text-slate-900 leading-tight">
-              Bangun Kebiasaan, <br/>
+              Bangun Kebiasaan, <br />
               <span className="text-sky-500">Lihat Perubahannya.</span>
             </h2>
             <p className="text-lg text-slate-500 mb-8 leading-relaxed">
-              Pertahankan konsistensimu dengan sistem Streak. Semakin sering kamu mencatat, semakin akurat MindMate mengenali dirimu.
+              Pertahankan konsistensimu dengan sistem Streak. Semakin sering
+              kamu mencatat, semakin akurat MindMate mengenali dirimu.
             </p>
             <div className="flex gap-4">
               <div className="px-6 py-3 bg-slate-50 rounded-2xl border border-slate-100 flex items-center gap-3">
@@ -169,34 +208,35 @@ const LandingPage = () => {
               </div>
             </div>
           </div>
-          
+
           {/* Right Visual */}
           <div className="flex-1 relative flex justify-center">
-             <div className="bg-gradient-to-br from-slate-900 to-slate-800 p-8 rounded-3xl shadow-2xl text-white transform rotate-3 hover:rotate-0 transition-all duration-500 max-w-sm w-full">
-                <div className="flex justify-between items-center mb-8">
-                   <div>
-                      <p className="text-slate-400 text-sm">Target Minggu Ini</p>
-                      <p className="text-2xl font-bold">5 Hari Beruntun</p>
-                   </div>
-                   <div className="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center">
-                      🔥
-                   </div>
+            <div className="isolate rounded-[2.5rem] p-8 text-white shadow-2xl relative overflow-hidden w-full max-w-sm flex flex-col justify-between group transform rotate-3 hover:rotate-0 hover:scale-[1.02] transition-all duration-500 bg-gradient-to-br from-orange-400 to-rose-500 shadow-orange-500/20">
+              <div className="absolute -top-24 -right-24 w-64 h-64 bg-white opacity-10 rounded-full blur-3xl transition-transform duration-700 group-hover:scale-110 -z-10" />
+
+              <div className="absolute bottom-0 left-0 w-full h-1/2 bg-gradient-to-t from-black/20 to-transparent rounded-b-[2.5rem] -z-10" />
+
+              <div className="relative z-10 flex justify-between items-start">
+                <div className="p-3 bg-white/20 backdrop-blur-md rounded-2xl">
+                  <Flame size={28} fill="currentColor" className="text-white" />
                 </div>
-                <div className="space-y-3">
-                   <div className="h-2 bg-slate-700 rounded-full overflow-hidden">
-                      <div className="h-full w-3/4 bg-orange-500 rounded-full"></div>
-                   </div>
-                   <div className="flex justify-between text-xs text-slate-400">
-                      <span>Sen</span>
-                      <span>Sel</span>
-                      <span>Rab</span>
-                      <span className="text-orange-400 font-bold">Kam</span>
-                      <span>Jum</span>
-                      <span>Sab</span>
-                      <span>Min</span>
-                   </div>
-                </div>
-             </div>
+                <span className="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider backdrop-blur-sm bg-white/20">
+                  On Fire!
+                </span>
+              </div>
+
+              <div className="relative z-10 text-center py-8">
+                <h3 className="text-7xl font-black mb-2 drop-shadow-sm">5</h3>
+                <p className="font-medium text-white/90 text-lg">
+                  Hari Berturut-turut
+                </p>
+              </div>
+
+              <div className="relative z-10 rounded-xl p-3 flex items-center justify-center gap-2 text-sm font-medium backdrop-blur-sm bg-black/10 text-white/80">
+                <Calendar size={16} />
+                <span>Jaga mood tetap positif!</span>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -207,26 +247,24 @@ const LandingPage = () => {
           <h2 className="text-4xl font-bold mb-12 text-slate-900">
             Siap mengambil alih kendali emosimu?
           </h2>
-          
+
           {/* Container relatif untuk menampung elemen absolut */}
           <div className="relative flex justify-center items-center h-32">
-            
             {/* Gambar diposisikan absolut ke kiri dari tengah */}
-            <img 
+            <img
               draggable="false"
-              src="/chick-run.png" 
-              alt="Mascot running" 
+              src="/chick-run.png"
+              alt="Mascot running"
               className="absolute right-1/2 mr-32 w-48 md:w-50 object-contain z-10"
             />
-            
+
             {/* Tombol tetap di tengah */}
-            <Link 
-              to="/login" 
+            <Link
+              to="/login"
               className="relative z-20 px-10 py-5 bg-slate-900 text-white rounded-full font-bold text-xl hover:bg-slate-800 transition-all shadow-xl hover:shadow-2xl flex items-center gap-2"
             >
               Coba MindMate Sekarang
             </Link>
-            
           </div>
         </div>
       </section>
@@ -236,10 +274,10 @@ const LandingPage = () => {
         <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
           <div className="flex items-center gap-2">
             <div className="font-bold text-xl text-slate-900">MindMate</div>
-            <img 
+            <img
               draggable="false"
-              src="/chick-sleep.png" 
-              alt="Mascot sleeping" 
+              src="/chick-sleep.png"
+              alt="Mascot sleeping"
               className="w-12 md:w-16 object-contain"
             />
           </div>
