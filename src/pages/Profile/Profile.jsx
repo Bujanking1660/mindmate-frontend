@@ -22,7 +22,6 @@ const Profile = () => {
   const [loading, setLoading] = useState(true);
   const [userData, setUserData] = useState(null);
   const [errorState, setErrorState] = useState(false);
-  const [reminder, setReminder] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   // --- SUBMIT & ALERT STATE ---
@@ -41,7 +40,7 @@ const Profile = () => {
         navigate("/login");
         return;
       }
-      try {
+      try { 
         const response = await api.get("/user");
         setUserData(response.data.data);
         setLoading(false);
@@ -55,8 +54,9 @@ const Profile = () => {
         }
       }
     };
+
     fetchProfile();
-  }, [navigate]);
+  }, [navigate])
 
   // --- UPDATE DATA ---
   const handleUpdateProfile = async (updatedData) => {
@@ -111,7 +111,7 @@ const Profile = () => {
 
   // --- LOGIC STREAK ---
   const streakCount = userData?.currentStreak?.length || 0;
-  const isStreakActive = streakCount > 1;
+  const isStreakActive = streakCount >= 1;
 
   // --- RENDER: LOADING ---
   if (loading) {
@@ -298,37 +298,7 @@ const Profile = () => {
               </div>
             </div>
 
-            {/* Reminder Toggle */}
-            <div className="bg-white rounded-[2rem] md:rounded-[2.5rem] p-6 border border-slate-100 shadow-xl shadow-slate-200/30 flex items-center justify-between">
-              <div className="flex items-center gap-3 md:gap-4">
-                <div
-                  className={`p-3 md:p-4 rounded-2xl transition-colors duration-300 ${reminder ? "bg-blue-50 text-blue-600" : "bg-slate-50 text-slate-400"}`}
-                >
-                  <Bell
-                    size={20}
-                    className="md:w-[24px] md:h-[24px]"
-                    fill={reminder ? "currentColor" : "none"}
-                  />
-                </div>
-                <div>
-                  <h3 className="font-black text-slate-800 text-base md:text-lg">
-                    Notifikasi
-                  </h3>
-                  <p className="text-xs md:text-sm text-slate-500 font-medium">
-                    Ingatkan saya
-                  </p>
-                </div>
-              </div>
-
-              <button
-                onClick={() => setReminder(!reminder)}
-                className={`w-14 h-8 md:w-16 md:h-9 rounded-full p-1 transition-all duration-300 shadow-inner ${reminder ? "bg-blue-600" : "bg-slate-200"}`}
-              >
-                <div
-                  className={`w-6 h-6 md:w-7 md:h-7 bg-white rounded-full shadow-md transform transition-transform duration-300 ${reminder ? "translate-x-6 md:translate-x-7" : "translate-x-0"}`}
-                />
-              </button>
-            </div>
+        
           </div>
         </div>
       </div>

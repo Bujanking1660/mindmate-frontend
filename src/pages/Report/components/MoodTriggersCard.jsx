@@ -3,7 +3,6 @@ import { Zap, Activity } from "lucide-react";
 
 const MoodTriggersCard = ({ triggersData, loading }) => {
   const [activeTriggerTab, setActiveTriggerTab] = useState("negative");
-  console.log(triggersData);
 
   return (
     <div className="bg-white rounded-3xl p-6 shadow-sm border border-slate-100 mb-8">

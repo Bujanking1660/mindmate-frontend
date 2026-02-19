@@ -58,35 +58,35 @@ const Home = () => {
   // =========================================
   const moodStyles = useMemo(
     () => ({
-      0: {
+      1: {
         textColor: "text-red-900",
         bgGradient: "from-red-400 to-rose-600",
         shadowColor: "shadow-rose-500/40",
         image: getMoodImage(1), 
         labelColor: "bg-red-100 text-red-700",
       },
-      1: {
+      2: {
         textColor: "text-orange-900",
         bgGradient: "from-orange-300 to-amber-500",
         shadowColor: "shadow-orange-500/40",
         image: getMoodImage(2),
         labelColor: "bg-orange-100 text-orange-700",
       },
-      2: {
+      3: {
         textColor: "text-blue-900",
         bgGradient: "from-blue-300 to-indigo-500",
         shadowColor: "shadow-blue-500/40",
         image: getMoodImage(3),
         labelColor: "bg-blue-100 text-blue-700",
       },
-      3: {
+      4: {
         textColor: "text-emerald-900",
         bgGradient: "from-emerald-300 to-green-500",
         shadowColor: "shadow-emerald-500/40",
         image: getMoodImage(4),
         labelColor: "bg-emerald-100 text-emerald-700",
       },
-      4: {
+      5: {
         textColor: "text-cyan-900",
         bgGradient: "from-cyan-300 to-blue-500",
         shadowColor: "shadow-cyan-500/40",

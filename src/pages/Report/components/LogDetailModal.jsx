@@ -26,10 +26,9 @@ const LogDetailModal = ({ isOpen, onClose, data }) => {
             <div className="absolute -bottom-10 -right-10 w-32 h-32 bg-blue-50 rounded-full blur-3xl opacity-50" />
           </div>
 
-          {/* Icon Mood Besar (Normalisasi ID: API 0-4 -> Assets 1-5) */}
           <div className="relative">
             <img 
-              src={getMoodImage(data.moodTypeId + 1)} 
+              src={getMoodImage(data.moodTypeId)} 
               alt={data.moodName}
               className="w-20 h-20 object-contain drop-shadow-xl animate-bounce-slow"
               style={{ animationDuration: '3s' }}
