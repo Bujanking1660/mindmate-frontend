@@ -56,9 +56,7 @@ const ReportCharts = ({ moodHistory, moodTypes }) => {
     return type ? type.moodName : "";
   };
 
-  // Kita asumsikan ID mood berjalan dari 1 sampai 5 (atau sesuai data kamu)
-  // Ini agar garis gridnya pas di angka bulat
-  const yTicks = [0, 1, 2, 3, 4]; 
+  const yTicks = [1, 2, 3, 4, 5]; 
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
