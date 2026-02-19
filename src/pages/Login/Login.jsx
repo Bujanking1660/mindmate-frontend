@@ -11,6 +11,12 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
+  const isProduction = import.meta.env.VITE_NODE_ENV === 'production';
+
+  const baseUrl = isProduction 
+    ? "https://mindmateapi.naycaaido.site" 
+    : "http://localhost:3000";
+
   // --- STATE MODAL ---
   const [modal, setModal] = useState({
     isOpen: false,
@@ -27,7 +33,7 @@ const Login = () => {
   };
 
   const handleGoogleLogin = () => {
-    window.location.replace("http://localhost:3000/auth/google");
+    window.location.replace(`${baseUrl}/auth/google`);
   };
 
   const handleLogin = async (e) => {
