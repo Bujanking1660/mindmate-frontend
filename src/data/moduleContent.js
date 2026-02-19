@@ -1,7 +1,7 @@
 // src/data/moduleContent.js
 
 export const MODULE_DATA = {
-  0: { // Very Sad
+  1: { // Very Sad
     theme: "rose",
     icon: "❤️‍🩹",
     title: "Ruang Pemulihan",
@@ -18,7 +18,7 @@ export const MODULE_DATA = {
         ]
     }
   },
-  1: { // Sad
+  2: { // Sad
     theme: "orange",
     icon: "🌧️",
     title: "Memeluk Emosi",
@@ -34,7 +34,7 @@ export const MODULE_DATA = {
         ]
     }
   },
-  2: { // Normal
+  3: { // Normal
     theme: "blue",
     icon: "🌊",
     title: "Mindfulness Dasar",
@@ -50,7 +50,7 @@ export const MODULE_DATA = {
         ]
     }
   },
-  3: { // Happy
+  4: { // Happy
     theme: "emerald",
     icon: "🌱",
     title: "Jurnal Rasa Syukur",
@@ -66,7 +66,7 @@ export const MODULE_DATA = {
         ]
     }
   },
-  4: { // Very Happy
+  5: { // Very Happy
     theme: "fuchsia",
     icon: "✨",
     title: "Abadikan Momen",
