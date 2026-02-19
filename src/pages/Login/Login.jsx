@@ -76,7 +76,7 @@ const Login = () => {
         type: "error",
         showCancel: false,
         confirmText: "Coba Lagi",
-        onConfirm: null // Tidak ada aksi, cuma tutup
+        onConfirm: null
       });
 
     } finally {
